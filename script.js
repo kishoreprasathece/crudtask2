@@ -1,43 +1,27 @@
-async function getdata() {
+async function fetchData() {
     try {
+      const response = await fetch('https://fakestoreapi.com/products');
+      const data = await response.json();
 
-        const searchTerm = document.getElementById('product-search').value.toLowerCase();
+      // Display the data
+      const container = document.getElementById('data-container');
+      container.innerHTML = '';  // Clear the "Loading..." text
 
-
-        const response = await fetch('https://fakestoreapi.com/products');
-        const products = await response.json(); 
-
-        
-        let filteredProducts = products;
-        if (searchTerm === 'all'   ) {
-         
-            filteredProducts = products;
-        } else {
-      
-            filteredProducts = products.filter(product => 
-                product.title.toLowerCase().includes(searchTerm)
-            );
-        }
-
-        const cartDiv = document.querySelector('.cart');
-        cartDiv.innerHTML = ''; 
-
-        if (filteredProducts.length > 0) {
-            filteredProducts.forEach(product => {
-                cartDiv.innerHTML += `
-                    <div class="product">
-                        <h3 id="title" >${product.title}</h3>
-                        <p>Price: $${product.price}</p>
-                        <img src="${product.image}" alt="${product.title}" width="50">
-                    </div>
-                `;
-            });
-        } else {
-            cartDiv.innerHTML = '<p>No products found.</p>';
-        }
+      data.forEach(product => {
+        container.innerHTML += `
+        <div class="product">
+            <h3>${product.title}</h3>
+            <p id=title >Price: $${product.price}</p>
+            <img src="${product.image}" alt="${product.title}" width="100">
+        </div>`;
+      });
     } catch (error) {
-        console.error("Error getting data:", error);
+      console.error('Error fetching data:', error);
+      document.getElementById('data-container').innerHTML = 'Failed to load data.';
     }
-}
+  }
 
 
+  window.onload = function() {
+    fetchData();
+  };
