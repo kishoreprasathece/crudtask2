@@ -3,16 +3,16 @@ async function fetchData() {
       const response = await fetch('https://fakestoreapi.com/products');
       const data = await response.json();
 
-      // Display the data
       const container = document.getElementById('data-container');
-      container.innerHTML = '';  // Clear the "Loading..." text
+      container.innerHTML = '';  
 
       data.forEach(product => {
         container.innerHTML += `
         <div class="product">
             <h3>${product.title}</h3>
-            <p id=title >Price: $${product.price}</p>
             <img src="${product.image}" alt="${product.title}" width="100">
+             <p id=title >Price: $${product.price}</p>
+             <button>add to cart</button>
         </div>`;
       });
     } catch (error) {
